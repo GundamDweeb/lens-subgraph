@@ -1,0 +1,69 @@
+specVersion: 0.0.5
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: LensHub
+    network: matic
+    source:
+      address: "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d"
+      abi: LensHub
+      startBlock: 28384641
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - ProfileCreated
+        - ProfileCreatorWhitelisted
+        - ProfileImageURISet
+        - DefaultProfileSet
+        - PostCreated
+        - MirrorCreated
+        - CollectNFTDeployed
+        - CollectNFTInitialized
+        - CollectNFTTransferred
+        - FollowNFTDelegatedPowerChanged
+        - FollowNFTDeployed
+        - FollowNFTInitialized
+        - FollowNFTTransferred
+        - FollowNFTURISet
+        - FollowModuleSet
+        - FollowModuleWhitelisted
+        - Followed
+        - FollowsApproved
+        - CommentCreated
+      abis:
+        - name: LensHub
+          file: LensHub/abis/LensProtocol.json
+      eventHandlers:
+        - event: ProfileCreated(indexed uint256,indexed address,indexed
+            address,string,string,address,bytes,string,uint256)
+          handler: handleProfileCreated
+        - event: ProfileCreatorWhitelisted(indexed address,indexed bool,uint256)
+          handler: handleProfileCreatorWhitelisted
+        - event: PostCreated(indexed uint256,indexed
+            uint256,string,address,bytes,address,bytes,uint256)
+          handler: handlePostCreated
+        - event: MirrorCreated(indexed uint256,indexed
+            uint256,uint256,uint256,bytes,address,bytes,uint256)
+          handler: handleMirrorCreated
+        - event: CollectNFTTransferred(indexed uint256,indexed uint256,indexed
+            uint256,address,address,uint256)
+          handler: handleCollectNFTTransferred
+        - event: Collected(indexed address,indexed uint256,indexed uint256,uint256,uint256,uint256)
+          handler: handleCollected
+        - event: FollowNFTTransferred(indexed uint256,indexed uint256,address,address,uint256)
+          handler: handleFollowNFTTransferred
+        - event: FollowNFTURISet(indexed uint256,string,uint256)
+          handler: handleFollowNFTURISet
+        - event: FollowModuleSet(indexed uint256,address,bytes,uint256)
+          handler: handleFollowModuleSet
+        - event: Followed(indexed address,uint256[],bytes[],uint256)
+          handler: handleFollowed
+        - event: CommentCreated(indexed uint256,indexed
+            uint256,string,uint256,uint256,bytes,address,bytes,address,bytes,uint256)
+          handler: handleCommentCreated
+        - event: DispatcherSet(indexed uint256,indexed address,uint256)
+          handler: handleDispatcherSet
+      file: LensHub/LensHub.wasm

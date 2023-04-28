@@ -3,28 +3,82 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: LensProtocol
+    name: LensHub
     network: matic
     source:
       address: "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d"
-      abi: LensProtocol
-      startBlock: 28384641
+      abi: LensHub
+      startBlock: 28384641 
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - AdminChanged
-        - BeaconUpgraded
-        - Upgraded
+        - ProfileCreated
+        - ProfileCreatorWhitelisted
+        - ProfileImageURISet
+        - DefaultProfileSet
+        - PostCreated
+        - MirrorCreated
+        - CollectNFTDeployed
+        - CollectNFTInitialized
+        - CollectNFTTransferred
+        - FollowNFTDelegatedPowerChanged
+        - FollowNFTDeployed
+        - FollowNFTInitialized
+        - FollowNFTTransferred
+        - FollowNFTURISet
+        - FollowModuleSet
+        - FollowModuleWhitelisted
+        - Followed
+        - FollowsApproved
+        - CommentCreated
       abis:
-        - name: LensProtocol
+        - name: LensHub
           file: ./abis/LensProtocol.json
       eventHandlers:
-        - event: AdminChanged(address,address)
-          handler: handleAdminChanged
-        - event: BeaconUpgraded(indexed address)
-          handler: handleBeaconUpgraded
-        - event: Upgraded(indexed address)
-          handler: handleUpgraded
+        - event: ProfileCreated(indexed uint256,indexed address,indexed address,string,string,address,bytes,string,uint256)
+          handler: handleProfileCreated
+        - event: ProfileCreatorWhitelisted(indexed address,indexed bool,uint256)
+          handler: handleProfileCreatorWhitelisted
+        # - event: ProfileImageURISet(indexed uint256,string,uint256)
+        #   handler: handleProfileImageURISet
+        # - event: DefaultProfileSet(indexed address,indexed uint256,uint256)
+        #   handler: handleDefaultProfileSet
+        - event: PostCreated(indexed uint256,indexed uint256,string,address,bytes,address,bytes,uint256)
+          handler: handlePostCreated
+        - event: MirrorCreated(indexed uint256,indexed uint256,uint256,uint256,bytes,address,bytes,uint256)
+          handler: handleMirrorCreated
+        # - event: CollectModuleWhitelisted(indexed address,indexed bool,uint256)
+        #   handler: handleCollectModuleWhitelisted
+        # - event: CollectNFTDeployed(indexed uint256,indexed uint256,indexed address,uint256)
+        #   handler: handleCollectNFTDeployed
+        # - event: CollectNFTInitialized(indexed uint256,indexed uint256,uint256)
+        #   handler: handleCollectNFTInitialized
+        - event: CollectNFTTransferred(indexed uint256,indexed uint256,indexed uint256,address,address,uint256)
+          handler: handleCollectNFTTransferred
+        - event: Collected(indexed address,indexed uint256,indexed uint256,uint256,uint256,uint256)
+          handler: handleCollected
+        # - event: FollowNFTDelegatedPowerChanged(indexed address,indexed uint256,uint256)
+        #   handler: handleFollowNFTDelegatedPowerChanged
+        # - event: FollowNFTDeployed(indexed uint256,indexed address,uint256)
+        #   handler: handleFollowNFTDeployed
+        # - event: FollowNFTInitialized(indexed uint256,uint256)
+        #   handler: handleFollowNFTInitialized
+        - event: FollowNFTTransferred(indexed uint256,indexed uint256,address,address,uint256)
+          handler: handleFollowNFTTransferred
+        - event: FollowNFTURISet(indexed uint256,string,uint256)
+          handler: handleFollowNFTURISet
+        - event: FollowModuleSet(indexed uint256,address,bytes,uint256)
+          handler: handleFollowModuleSet
+        # - event: FollowModuleWhitelisted(indexed address,indexed bool,uint256)
+        #   handler: handleFollowModuleWhitelisted
+        - event: Followed(indexed address,uint256[],bytes[],uint256)
+          handler: handleFollowed
+        # - event: FollowsApproved(indexed address,indexed uint256,address[],bool[],uint256)
+        #   handler: handleFollowsApproved
+        - event: CommentCreated(indexed uint256,indexed uint256,string,uint256,uint256,bytes,address,bytes,address,bytes,uint256)
+          handler: handleCommentCreated
+        - event: DispatcherSet(indexed uint256,indexed address,uint256)
+          handler: handleDispatcherSet
       file: ./src/lens-protocol.ts
